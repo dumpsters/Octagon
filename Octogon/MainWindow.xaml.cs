@@ -114,6 +114,11 @@ namespace Octagon
          ModelConfiguration.Main.AddForce();
       }
 
+      private void ButtonAddStripAlpha(object sender, RoutedEventArgs e)
+      {
+         ModelConfiguration.Main.AddStripAlpha();
+      }
+
       private void ButtonAddCustom(object sender, RoutedEventArgs e)
       {
          ModelConfiguration.Main.AddCustom();
@@ -253,5 +258,6 @@ namespace Octagon
          w.DataContext = w.ModelProcessor;
          w.ShowDialog();
       }
-   }
+
+    }
 }

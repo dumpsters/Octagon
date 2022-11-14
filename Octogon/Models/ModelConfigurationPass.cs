@@ -32,6 +32,9 @@ namespace Octagon.Models
             case TypePass.Force:
                Title = "Force recompression";
                break;
+            case TypePass.StripAlpha:
+               Title = "Strip unused alphas";
+               break;
             case TypePass.ApplyGmic:
                Title = "Apply GMIC filter";
                break;

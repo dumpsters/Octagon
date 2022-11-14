@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using Octagon.Tools;
@@ -88,6 +89,13 @@ namespace Octagon.Models
          ModelPasses.Add(new ModelConfigurationPass(pass));
       }
 
+      public void AddStripAlpha()
+      {
+         var pass = ConfigurationPass.GetStripAlpha();
+         Main.Passes.Add(pass);
+         ModelPasses.Add(new ModelConfigurationPass(pass));
+      }
+
       public void AddCustom()
       {
          var pass = ConfigurationPass.GetCustom();
@@ -117,9 +125,9 @@ namespace Octagon.Models
             Main.Passes.Remove(passSelected.Pass);
             ModelPasses.Remove(passSelected);         
          }
-      }          
+      }
 
-      public string PathBackup
+        public string PathBackup
       {
          get { return Main.PathBackup; }
          set

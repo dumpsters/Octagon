@@ -372,7 +372,9 @@
 									          Click="ButtonAddFormatPass" />
 									<MenuItem Header="_Force recompression" Margin="5"
 									          Click="ButtonAddForce" />
-								</MenuItem>
+                                    <MenuItem Header="_Strip unused alphas" Margin="5"
+									          Click="ButtonAddStripAlpha" />
+                                </MenuItem>
 								<!--Customs-->
 								<MenuItem Header="Add _specials filter" Margin="5">
 									<MenuItem Header="_Apply GMIC filter" Margin="5"

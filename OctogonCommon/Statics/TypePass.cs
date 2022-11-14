@@ -9,6 +9,7 @@ namespace OctagonCommon.Statics
       Format,
       ApplyGmic,
       ApplyCustom,
+      StripAlpha,
       Force,
       ForceMipmaps,
       CorrectMipmaps,
