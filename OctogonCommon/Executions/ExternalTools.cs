@@ -157,7 +157,7 @@ namespace OctagonCommon.Executions
          return CallBsarch(string.Format("{0}: {1}", ProgressUnpack, fileName), call, verbose);
       }
 
-      public InformationProcess CallDxDiag(string filePath, bool isGetOutput, bool isVerbose)
+      public InformationProcess CallDxDiag(string command, string filePath, bool isGetOutput, bool isVerbose)
       {
          var startInfo = new ProcessStartInfo
          {
@@ -167,7 +167,7 @@ namespace OctagonCommon.Executions
             RedirectStandardError = true,
             CreateNoWindow = true,
             FileName = ConfigurationPath.PathTexdiag,
-            Arguments = string.Format("info \"{0}\" ", filePath)
+            Arguments = string.Format("{0} \"{1}\" ", command, filePath)
          };
          //
          var process = new Process { StartInfo = startInfo };

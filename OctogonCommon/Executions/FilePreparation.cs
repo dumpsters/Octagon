@@ -256,6 +256,14 @@ namespace OctagonCommon.Executions
                   continue;
                }
                //
+               if (scalePass.TypePass == TypePass.StripAlpha)
+               {
+                  IsUnusedAlpha(order, mainCfg.IsVerbose);
+                  order.IsDoTexconv = true;
+                  confirmOrder = true;
+                  continue;
+               }
+               //
                if (scalePass.TypePass == TypePass.ApplyGmic)
                {
                   order.IsGmicPass = true;
@@ -566,7 +574,7 @@ namespace OctagonCommon.Executions
          var textureSource = order.IsUseBackup && order.FileTarget != null ? order.FileTarget.FullName : order.FileSource.FullName;
          int exitCode;
          //
-         var tDxDiag = ExternalTools.CallDxDiag(textureSource, true, isVerbose);
+         var tDxDiag = ExternalTools.CallDxDiag("info", textureSource, true, isVerbose);
          //
          if (tDxDiag.HasError)
          {
@@ -631,25 +639,64 @@ namespace OctagonCommon.Executions
          return true;
       }
 
-      //private bool GetCurrentImageSize3(InformationOrder order)
-      //{
-      //   int w, h, m;
-      //   string f;
-      //   //
-      //   var textureSource = order.IsUseBackup && order.FileTarget != null ? order.FileTarget.FullName : order.FileSource.FullName;
-      //     //
-      //   if (ExternalTools.CallDxDiagDirect(textureSource, out w, out h, out m, out f))
-      //   {
-      //      Logger.Log("DxDiag unable to get info: {0}", textureSource, TypeLog.Error);
-      //      return false;
-      //   }
-      //   //
-      //   order.TargetSize = new InformationImage { Width = w, Height = h, Mipmaps = m, Format = f };
-      //   order.OriginalSize = new InformationImage { Width = w, Height = h, Mipmaps = m, Format = f, TypeTexCompression = TypeTexCompression.None };
-      //   return true;
-      //}
+        //private bool GetCurrentImageSize3(InformationOrder order)
+        //{
+        //   int w, h, m;
+        //   string f;
+        //   //
+        //   var textureSource = order.IsUseBackup && order.FileTarget != null ? order.FileTarget.FullName : order.FileSource.FullName;
+        //     //
+        //   if (ExternalTools.CallDxDiagDirect(textureSource, out w, out h, out m, out f))
+        //   {
+        //      Logger.Log("DxDiag unable to get info: {0}", textureSource, TypeLog.Error);
+        //      return false;
+        //   }
+        //   //
+        //   order.TargetSize = new InformationImage { Width = w, Height = h, Mipmaps = m, Format = f };
+        //   order.OriginalSize = new InformationImage { Width = w, Height = h, Mipmaps = m, Format = f, TypeTexCompression = TypeTexCompression.None };
+        //   return true;
+        //}
 
-      public void PrepareUnmerge(ConfigurationMain mainCfg, List<InformationFileDeletion> deletes)
+        private bool IsUnusedAlpha(InformationOrder order, bool isVerbose)
+        {
+            var textureSource = order.IsUseBackup && order.FileTarget != null ? order.FileTarget.FullName : order.FileSource.FullName;
+            //
+            var tDxDiag = ExternalTools.CallDxDiag("analyze", textureSource, true, isVerbose);
+            //
+            if (tDxDiag.HasError)
+            {
+                Logger.Log("DxDiag failed for {0}\nDxDiag Output:\n{1}", textureSource, tDxDiag, TypeLog.Error);
+                return false;
+            }
+            //
+            var lines = tDxDiag.Output;
+            bool unusedAlpha = false;
+            foreach (var line in lines)
+            {
+                if (line.StartsWith("Variance", StringComparison.OrdinalIgnoreCase))
+                {
+                    unusedAlpha = string.Equals("0.000000", line.Substring(line.Length - 9, 8));
+                    break;
+                }
+            }
+
+            if (unusedAlpha)
+            {
+                switch (order.OriginalSize.Format)
+                {
+                    case "BC3_UNORM":
+                    case "BC7_UNORM":
+                        order.TargetSize.Format = "BC1_UNORM";
+                        break;
+                    default:
+                        break;
+                }
+            }
+            
+            return true;
+        }
+
+        public void PrepareUnmerge(ConfigurationMain mainCfg, List<InformationFileDeletion> deletes)
       {
          if (mainCfg.IsVerbose)
          {
