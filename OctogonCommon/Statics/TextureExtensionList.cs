@@ -10,7 +10,8 @@ namespace OctagonCommon.Statics
       {
          List = new List<string>
          {
-            ".DDS"
+            ".DDS",
+			".TGA"
          };
       }
    }
