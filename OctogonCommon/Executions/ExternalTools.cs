@@ -180,16 +180,16 @@ namespace OctagonCommon.Executions
          switch (typeTexCompression)
          {
             case TypeTexCompression.BC7Max:
-               compressionParam = " -bcmax";
+               compressionParam = " -bc x";
                break;
             case TypeTexCompression.BC7Min:
-               compressionParam = " -bcquick";
+               compressionParam = " -bc q";
                break;
             case TypeTexCompression.BC13Dith:
-               compressionParam = " -bcdither";
+               compressionParam = " -bc d";
                break;
             case TypeTexCompression.BC13Uni:
-               compressionParam = " -bcuniform";
+               compressionParam = " -bc u";
                break;
          }
          var startInfo = new ProcessStartInfo
