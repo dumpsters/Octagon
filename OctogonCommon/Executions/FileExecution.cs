@@ -202,7 +202,7 @@ namespace OctagonCommon.Executions
                {
                   ExternalTools.CallGmic(newFilePath, orderGmicCommand);
                }
-               CreateTex(mainCfg, newFilePath, order);
+               CreateDDS(mainCfg, newFilePath, order);
                File.Delete(newFilePath);
             }
          }
@@ -230,7 +230,7 @@ namespace OctagonCommon.Executions
                //
                if (order.IsApplyOnPng)
                {
-                  CreateTex(mainCfg, pathSource, order);
+                  CreateDDS(mainCfg, pathSource, order);
                   File.Delete(pathSource);
                }
             }
@@ -242,12 +242,12 @@ namespace OctagonCommon.Executions
             {
                var textureSource = order.IsUseBackup && order.FileTarget != null ? order.FileTarget.FullName : order.FileSource.FullName;
                //
-               CreateTex(mainCfg, textureSource, order);
+               CreateDDS(mainCfg, textureSource, order);
             }
          }
       }
 
-      private void CreateTex(ConfigurationMain mainCfg, string textureSource, InformationOrder order)
+      private void CreateDDS(ConfigurationMain mainCfg, string textureSource, InformationOrder order)
       {
          var tTexConv = ExternalTools.CallTexConv(textureSource, order.FileSource.Directory.FullName, order.TargetSize.Width,
             order.TargetSize.Height, Math.Max(order.TargetSize.Mipmaps, 1), order.TargetSize.Format, order.TargetSize.TypeTexCompression, false, mainCfg.IsVerbose);

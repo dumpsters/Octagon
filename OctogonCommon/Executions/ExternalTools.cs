@@ -176,8 +176,6 @@ namespace OctagonCommon.Executions
 
       public InformationProcess CallTexConv(string filePath, string ouputDir, int newW, int newH, int mips, string format, TypeTexCompression typeTexCompression, bool isGetOutput, bool isVerbose)
       {
-         format = new FileInfo(filePath).Extension;
-         Logger.Log("Test format: {0}", format, TypeLog.Warning);
          string compressionParam = string.Empty;
          switch (typeTexCompression)
          {

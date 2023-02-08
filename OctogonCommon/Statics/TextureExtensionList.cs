@@ -11,7 +11,7 @@ namespace OctagonCommon.Statics
          List = new List<string>
          {
             ".DDS",
-            ".TGA"
+			".TGA"
          };
       }
    }
